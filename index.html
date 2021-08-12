@@ -13,18 +13,25 @@
     <meta name="keywords" content="Kenzie" />
 
     <!-- Title Page-->
-    <title>Kenzie JavaScript Page</title>
+    <title>Jeopardy Trivia Game</title>
 
     <!-- CSS-->
     <link href="style.css" rel="stylesheet" media="all" />
   </head>
 
   <body>
-    <h1>Open the Developer Tools to see the console output.</h1>
-    <h3>
-      Either right click and select "Inspect" or use the shortcut Option + ⌘ + J
-      (on macOS), or Shift + CTRL + J (on Windows/Linux).
-    </h3>
+    <h1>Jeopardy Trivia Game</h1>
+
+    <div id="textBox">
+      <h3>HOW MANY CAN YOU ANSWER?</h3>
+    </div>
+
+  <main id="main">
+    <div id="loadingDiv">
+      <button id="playButton">Let's Play!</button>
+    </div>
+    <div id="questionDiv"></div>
+  </main>
     <script src="code.js"></script>
   </body>
 </html>
