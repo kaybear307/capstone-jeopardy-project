@@ -1,1 +1,7 @@
-/* Write your CSS Here. */
+
+#correctAnsDiv {
+    display: none;
+}
+#loserDiv {
+    display: none;
+}
