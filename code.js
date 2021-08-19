@@ -23,6 +23,7 @@ let score = 0
 
 
 //FUNCTIONS
+
 function gameFetch(){
 fetch(`${baseURL}api/random`)
   .then(response => response.json())
@@ -33,19 +34,22 @@ fetch(`${baseURL}api/random`)
         .then(response => response.json())
         .then(data => {
             randomArray = data
-            startQuestion = randomArray[randomNum]
-            questionDiv.append(startQuestion.question)
-            console.log(randomArray)
-            console.log(startQuestion.answer)
-            
+            questionGrab()
         })
-      console.log(categoryArray)
-      answerInput()
-    
-      
   });
-  
 };
+
+function questionGrab(){
+    startQuestion = randomArray[randomNum]
+    questionDiv.append(startQuestion.question)
+    console.log(randomArray)
+    console.log("answer: " + startQuestion.answer)
+    answerInput()
+    console.log("category: " + categoryArray)
+    correctAnsDiv.style.display='none'
+    loserDiv.style.display ='none'
+
+}
 
 function answerInput(){
     input.classList.add('answerInput')
@@ -57,16 +61,28 @@ function answerInput(){
     submitButton.innerText = 'Feeling Smart!'
     main.append(submitButton)
 
-    submitButton.addEventListener('click', function(event){
+    input.value = ''
+    
+}
+
+function correctAnswers(){
+   return correctAnsDiv.style.display='inline'
+}
+
+
+submitButton.addEventListener('click', function(event){
         event.preventDefault()
+
         let userAnswer = input.value
-        console.log(userAnswer)
-        formToDisapear()
+        console.log("user answer: " + userAnswer)
+        // formToDisapear()
         if (userAnswer.toLowerCase() === startQuestion.answer.toLowerCase()) {
             console.log('true')
             score += 1
             scoreCard()
-            return correctAnsDiv.style.display='inline'
+            correctAnswers()
+            // return correctAnsDiv.style.display='inline'
+            
         } else {
             console.log('false')
             score = 0
@@ -74,15 +90,13 @@ function answerInput(){
             return loserDiv.style.display ='inline'
         }
         
-    })
-    input.value = ''
-    
-}
+})
+
 
 function scoreCard(){
-    document.body.append(scoreDiv)
+   main.append(scoreDiv)
     scoreDiv.innerHTML = `Score = ${score}`
-    console.log("score" + score)
+    console.log("score: " + score)
 }
 
 // submitButton.addEventListener('click', function(){
@@ -90,22 +104,19 @@ function scoreCard(){
 // })
 
 nextButton.addEventListener('click', function(){
-    answerInput()
     randomNum += 1
-    startQuestion = randomArray[randomNum]
     questionDiv.innerHTML = ''
-    questionDiv.append(startQuestion.question)
-    console.log(startQuestion.answer)
-    winnerDisapear()
-    formToInline()
+    // winnerDisapear()
+    // formToInline()
+    questionGrab()
     
 })
 
 playAgain.addEventListener('click', function(){
     questionDiv.innerHTML = ''
     gameFetch()
-    loserDisapear()
-    formToInline()
+    // loserDisapear()
+    // formToInline()
     console.log(playAgain)
 })
 
