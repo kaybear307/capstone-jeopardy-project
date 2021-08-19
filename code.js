@@ -4,6 +4,7 @@ let categoryArray = [] //Used in fetch to store a random category
 let randomArray = [] //Used in fetch to store the selected category and stores the arrays up to 100
 let startQuestion = [] // Used in fetch to store the first displayed question array.
 let randomNum = 0
+let index = []
 // let randomNum = Math.floor(Math.random()*(randomArray.length-1))
 
 let playButton = document.getElementById('playButton')
@@ -15,15 +16,10 @@ let correctAnsDiv = document.getElementById('correctAnsDiv')
 let nextButton = document.getElementById('nextButton')
 let loserDiv = document.getElementById('loserDiv')
 let playAgain = document.getElementById('playAgainButton')
-let scoreDiv = document.createElement('div')
-scoreDiv.classList.add('scoreDiv')
+let scoreDiv = document.getElementById('scoreDiv')
 let score = 0
 
-
-
-
 //FUNCTIONS
-
 function gameFetch(){
 fetch(`${baseURL}api/random`)
   .then(response => response.json())
@@ -34,100 +30,53 @@ fetch(`${baseURL}api/random`)
         .then(response => response.json())
         .then(data => {
             randomArray = data
+            console.log(randomArray)
             questionGrab()
         })
-  });
+    });
 };
 
 function questionGrab(){
-    startQuestion = randomArray[randomNum]
+    console.log("category: " + categoryArray)
+    startQuestion = randomArray[Math.floor(Math.random()*(randomArray.length-1))]
     questionDiv.append(startQuestion.question)
-    console.log(randomArray)
     console.log("answer: " + startQuestion.answer)
     answerInput()
-    console.log("category: " + categoryArray)
+    currentIndex()
     correctAnsDiv.style.display='none'
     loserDiv.style.display ='none'
-
 }
 
 function answerInput(){
     input.classList.add('answerInput')
     input.placeholder = 'type your answer here.'
     main.append(input)
-    
-    
+    input.value = ''
+
     submitButton.classList.add('submitButton')
     submitButton.innerText = 'Feeling Smart!'
     main.append(submitButton)
+}
 
-    input.value = ''
-    
+function scoreCard(){
+    scoreDiv.innerHTML = `Score = ${score}`
+ }
+
+function currentIndex(){
+    index = randomArray.findIndex( element => {
+        if (element.answer === startQuestion.answer) {
+          return true;
+        }
+    });
+    console.log('Current index is: ' + index);
 }
 
 function correctAnswers(){
    return correctAnsDiv.style.display='inline'
 }
 
-
-submitButton.addEventListener('click', function(event){
-        event.preventDefault()
-
-        let userAnswer = input.value
-        console.log("user answer: " + userAnswer)
-        // formToDisapear()
-        if (userAnswer.toLowerCase() === startQuestion.answer.toLowerCase()) {
-            console.log('true')
-            score += 1
-            scoreCard()
-            correctAnswers()
-            // return correctAnsDiv.style.display='inline'
-            
-        } else {
-            console.log('false')
-            score = 0
-            scoreCard()
-            return loserDiv.style.display ='inline'
-        }
-        
-})
-
-
-function scoreCard(){
-   main.append(scoreDiv)
-    scoreDiv.innerHTML = `Score = ${score}`
-    console.log("score: " + score)
-}
-
-// submitButton.addEventListener('click', function(){
-//     formToDisapear()
-// })
-
-nextButton.addEventListener('click', function(){
-    randomNum += 1
-    questionDiv.innerHTML = ''
-    // winnerDisapear()
-    // formToInline()
-    questionGrab()
-    
-})
-
-playAgain.addEventListener('click', function(){
-    questionDiv.innerHTML = ''
-    gameFetch()
-    // loserDisapear()
-    // formToInline()
-    console.log(playAgain)
-})
-
-function winnerDisapear(){
-    nextButton.style.display = 'none'
-    correctAnsDiv.style.display = 'none'
-}
-
-function loserDisapear(){
-    loserDiv.style.display = 'none'
-    playAgain.style.display = 'none'
+function incorrectAnswers(){
+    return loserDiv.style.display ='inline'
 }
 
 function formToInline(){
@@ -139,6 +88,40 @@ function formToDisapear(){
     input.style.display = 'none'
     submitButton.style.display = 'none'
 }
+
+// Event Listeners
+submitButton.addEventListener('click', function(event){
+        event.preventDefault()
+
+        let userAnswer = input.value
+        console.log("user answer: " + userAnswer)
+        formToDisapear()
+        if (userAnswer.toLowerCase() === startQuestion.answer.toLowerCase()) {
+            score += 1
+            scoreCard()
+            correctAnswers()
+        } else {
+            score = 0
+            scoreCard()
+            incorrectAnswers()
+        }
+        randomArray.splice(index, 1)
+        console.log(randomArray)
+})
+
+nextButton.addEventListener('click', function(){
+    // randomNum += 1
+    randomNum = Math.floor(Math.random()*(randomArray.length-1))
+    questionDiv.innerHTML = ''
+    formToInline()
+    questionGrab()
+})
+
+playAgain.addEventListener('click', function(){
+    questionDiv.innerHTML = ''
+    gameFetch()
+    formToInline()
+})
 
 playButton.addEventListener('click', function(){
     gameFetch()
