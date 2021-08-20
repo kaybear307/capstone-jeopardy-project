@@ -39,6 +39,7 @@ fetch(`${baseURL}api/random`)
 function questionGrab(){
     console.log("category: " + categoryArray)
     startQuestion = randomArray[Math.floor(Math.random()*(randomArray.length-1))]
+    questionDiv.style.display = 'inline'
     questionDiv.append(startQuestion.question)
     console.log("answer: " + startQuestion.answer)
     answerInput()
@@ -125,5 +126,5 @@ playAgain.addEventListener('click', function(){
 
 playButton.addEventListener('click', function(){
     gameFetch()
-    playButton.style.display = 'none'
+    loadingDiv.style.display = 'none'
 })
