@@ -46,6 +46,7 @@ function questionGrab(){
     currentIndex()
     correctAnsDiv.style.display='none'
     loserDiv.style.display ='none'
+    scoreDiv.style.display ='flex'
 }
 
 function answerInput(){
@@ -55,7 +56,7 @@ function answerInput(){
     input.value = ''
 
     submitButton.classList.add('submitButton')
-    submitButton.innerText = 'Feeling Smart!'
+    submitButton.innerText = 'Feeling Smart? Click to attempt!'
     main.append(submitButton)
 }
 
