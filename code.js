@@ -2,10 +2,9 @@
 const baseURL = 'https://jservice.io/'
 let categoryArray = [] //Used in fetch to store a random category
 let randomArray = [] //Used in fetch to store the selected category and stores the arrays up to 100
-let startQuestion = [] // Used in fetch to store the first displayed question array.
+let startQuestion = [] //Used in fetch to store the first displayed question array.
 let randomNum = 0
-let index = []
-// let randomNum = Math.floor(Math.random()*(randomArray.length-1))
+let index = [] //Used to locate the current index
 
 let playButton = document.getElementById('playButton')
 let questionDiv = document.getElementById('questionDiv')
@@ -37,11 +36,11 @@ fetch(`${baseURL}api/random`)
 };
 
 function questionGrab(){
-    console.log("category: " + categoryArray)
+    // console.log("category: " + categoryArray)
     startQuestion = randomArray[Math.floor(Math.random()*(randomArray.length-1))]
     questionDiv.style.display = 'inline'
     questionDiv.append(startQuestion.question)
-    console.log("answer: " + startQuestion.answer)
+    // console.log("answer: " + startQuestion.answer)
     answerInput()
     currentIndex()
     correctAnsDiv.style.display='none'
@@ -70,7 +69,7 @@ function currentIndex(){
           return true;
         }
     });
-    console.log('Current index is: ' + index);
+    // console.log('Current index is: ' + index);
 }
 
 function correctAnswers(){
@@ -96,7 +95,7 @@ submitButton.addEventListener('click', function(event){
         event.preventDefault()
 
         let userAnswer = input.value
-        console.log("user answer: " + userAnswer)
+        // console.log("user answer: " + userAnswer)
         formToDisapear()
         if (userAnswer.toLowerCase() === startQuestion.answer.toLowerCase()) {
             score += 1
@@ -108,11 +107,10 @@ submitButton.addEventListener('click', function(event){
             incorrectAnswers()
         }
         randomArray.splice(index, 1)
-        console.log(randomArray)
+        // console.log(randomArray)
 })
 
 nextButton.addEventListener('click', function(){
-    // randomNum += 1
     randomNum = Math.floor(Math.random()*(randomArray.length-1))
     questionDiv.innerHTML = ''
     formToInline()
